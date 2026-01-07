@@ -11,7 +11,12 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: action/checkout@v2          
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+        
+      - name: Getting every commit
+        run: echo "COUNT=$(git rev-list --count HEAD)" >> $GITHUB_ENV
 
       - name: Create Awesome Badge
         uses: schneegans/dynamic-badges-action@v1.7.0
@@ -20,6 +25,6 @@ jobs:
           gistID: 3ee9cff571564854fe56ae14f7e5d2d6
           filename: commits.json
           label: Commits
-          message: World
+          message: ${{ env.COUNT }}
           color: red
     
