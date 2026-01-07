@@ -1,0 +1,33 @@
+name: project code line counter
+
+on:
+  push:
+    branches:
+      - '**'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Lines of total code
+        id: lines
+        run: |
+          echo "lines=$(find . -type f ! -path './.git/*' -print0 \
+            | xargs -0 wc -l \
+            | tail -n 1 \
+            | awk '{print $1}')" >> $GITHUB_OUTPUT
+
+      - name: Create Awesome Badge
+        uses: schneegans/dynamic-badges-action@v1.7.0
+        with:
+          auth: ${{ secrets.GIST_SECRET }}
+          gistID: fae943e96001bebcf84a9a164f42d448
+          filename: lines.json
+          label: Lines of Code
+          message: ${{ steps.lines.outputs.lines }}
+          color: blue
