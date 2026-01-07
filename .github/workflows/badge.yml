@@ -1,0 +1,25 @@
+name: Create dynamic badge
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: action/checkout@v2          
+
+      - name: Create Awesome Badge
+        uses: schneegans/dynamic-badges-action@v1.7.0
+        with:
+          auth: ${{ secrets.GIST_SECRET }}
+          gistID: 3ee9cff571564854fe56ae14f7e5d2d6
+          filename: commits.json
+          label: Commits
+          message: World
+          color: red
+    
